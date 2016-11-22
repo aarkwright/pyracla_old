@@ -15,3 +15,8 @@ class EMAGSpider(scrapy.Spider):
                     item.css("div.bottom-container div.pret-produs-listing span.price-over span.money-int::text").extract_first().replace(".", ""),
                     item.css("div.bottom-container div.pret-produs-listing span.price-over sup.money-decimal::text").extract_first())),
             }
+
+        next_page = response.css("a.emg-icon-holder::attr(href)").extract_first()
+        if next_page is not None:
+            next_page = response.urljoin(next_page)
+            yield scrapy.Request(next_page, callback=self.parse)
