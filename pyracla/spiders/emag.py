@@ -4,12 +4,8 @@ import scrapy
 class QuotesSpider(scrapy.Spider):
     name = "emag"
 
-    allowed_domains = ["craigslist.org"]
+    allowed_domains = ["emag.ro"]
     start_urls = ['www.emag.ro/placi_video/c']
-
-    def start_requests(self):
-        for url in self.start_urls:
-            yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
         for item, price in response.css("div.product-holder-grid form.inner-form"), response.css("div.product-holder-grid form.inner-form div.bottom-container div.pret-produs-listing"):
