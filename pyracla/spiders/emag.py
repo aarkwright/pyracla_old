@@ -10,8 +10,8 @@ class EMAGSpider(scrapy.Spider):
     def parse(self, response):
         for item in response.css("div.product-holder-grid form.inner-form"):
             yield {
-                u'title': item.css("div.middle-container h2 a::text").extract_first().strip(),
-                'price_ron': '{}.{}ron'.format(
+                'title': item.css("div.middle-container h2 a::text").extract_first().strip(),
+                'price_ron': float('{}.{}'.format(
                     item.css("div.bottom-container div.pret-produs-listing span.price-over span.money-int::text").extract_first().replace(".", ""),
-                    item.css("div.bottom-container div.pret-produs-listing span.price-over sup.money-decimal::text").extract_first()),
+                    item.css("div.bottom-container div.pret-produs-listing span.price-over sup.money-decimal::text").extract_first())),
             }
