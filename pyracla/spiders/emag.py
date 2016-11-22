@@ -20,4 +20,4 @@ class EMAGSpider(scrapy.Spider):
         if next_page is not None:
             next_page = response.urljoin(next_page)
             print(next_page)
-            yield scrapy.Request(next_page, callback=self.parse, dont_filter=True)
+            yield scrapy.Request(next_page, callback=self.parse, dont_filter=False)
