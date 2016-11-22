@@ -10,8 +10,9 @@ class QuotesSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
-        page = response.url.split("/")[-2]
-        filename = 'emag-%s.html' % page
-        with open(filename, 'wb') as f:
-            f.write(response.body)
-        self.log('Saved file %s' % filename)
+        for item, price in response.css("div.product-holder-grid form.inner-form"), response.css("div.product-holder-grid form.inner-form div.bottom-container div.pret-produs-listing"):
+            yield {
+                'title': item.css('div.middle-container h2 a::text').extract_first().strip(),
+                'price_ron': '%i.%i' % (price.css("span.price-over span.money-int::text").extract_first().strip(),
+                                        price.css("span.price-over span.money-decimal::text").extract_first().strip()),
+            }
