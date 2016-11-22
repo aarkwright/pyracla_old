@@ -13,5 +13,5 @@ class EMAGSpider(scrapy.Spider):
                 'title': item.css("div.middle-container h2 a::text").extract_first(),
                 'price_ron': '{}.{}ron'.format(
                     item.css("div.bottom-container div.pret-produs-listing span.price-over span.money-int::text").extract_first().replace(".", ""),
-                    item.css("div.bottom-container div.pret-produs-listing span.price-over span.money-decimal::text").extract_first()),
+                    item.css("div.bottom-container div.pret-produs-listing span.price-over sup.money-decimal::text").extract_first()),
             }
