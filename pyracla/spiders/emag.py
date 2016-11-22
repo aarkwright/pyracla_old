@@ -11,6 +11,7 @@ class EMAGSpider(scrapy.Spider):
         for item in response.css("div.product-holder-grid form.inner-form"):
             yield {
                 'title': item.css("div.middle-container h2 a::text").extract_first(),
-                'price_ron': '{}.{:2d}ron'.format(item.css("div.bottom-container div.pret-produs-listing span.price-over span.money-int::text").extract_first().replace(".", ""),
-                                        item.css("div.bottom-container div.pret-produs-listing span.price-over span.money-decimal::text").extract_first()),
+                'price_ron': '{}.{}ron'.format(
+                    item.css("div.bottom-container div.pret-produs-listing span.price-over span.money-int::text").extract_first().replace(".", ""),
+                    item.css("div.bottom-container div.pret-produs-listing span.price-over span.money-decimal::text").extract_first()),
             }
