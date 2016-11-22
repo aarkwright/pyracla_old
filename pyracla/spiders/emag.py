@@ -4,9 +4,11 @@ import scrapy
 class QuotesSpider(scrapy.Spider):
     name = "emag"
 
+    allowed_domains = ["craigslist.org"]
+    start_urls = ['www.emag.ro/placi_video/c']
+
     def start_requests(self):
-        urls = ['www.emag.ro/placi_video/c']
-        for url in urls:
+        for url in self.start_urls:
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
