@@ -6,10 +6,11 @@ class EMAGSpider(Spider):
     name = "emag"
 
     allowed_domains = ["emag.ro"]
-    url = "http://www.emag.ro/placi_video/c"
+    urls = ["http://www.emag.ro/placi_video/c"]
 
     def start_requests(self):
-        yield Request(self.url, callback=self.parse)
+        for url in self.urls:
+            yield Request(url, callback=self.parse)
 
     def parse(self, response):
         for item in response.css("div.product-holder-grid form.inner-form"):
