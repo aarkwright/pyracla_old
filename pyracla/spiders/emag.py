@@ -27,7 +27,7 @@ class EMAGSpider(Spider):
 
         # Get the correct next page indicator
         for _e in response.css("div.emg-pagination-box a.emg-icon-holder").extract():
-            if _e.css("span.icon-i44-go-right").extract_first() is not None:
+            if len(_e.css("span.icon-i44-go-right").extract()) == 1:  # should be only one Next page indicator.
                 next_page = _e.css("::attr(href)").extract_first()
             else:
                 next_page = None  # end of the line
