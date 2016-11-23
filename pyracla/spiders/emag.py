@@ -1,5 +1,6 @@
 from scrapy.spiders import Spider
 from scrapy.http import Request
+from scrapy.selector import Selector
 
 
 class EMAGSpider(Spider):
@@ -10,20 +11,23 @@ class EMAGSpider(Spider):
 
     def start_requests(self):
         for url in self.urls:
-            yield Request(url, callback=self.parse)
+            yield Request(url, callback=self.parse_menu)
 
-    def parse(self, response):
+    def parse_product(self, reponse):
+        pass
 
-        for item in response.css("div.product-holder-grid form.inner-form"):
-            yield {
-                'title': item.css("div.middle-container h2 a::text").extract_first().strip(),
-                'price_ron': float('{}.{}'.format(
-                    item.css(
-                        "div.bottom-container div.pret-produs-listing span.price-over span.money-int::text").extract_first().replace(
-                        ".", ""),
-                    item.css(
-                        "div.bottom-container div.pret-produs-listing span.price-over sup.money-decimal::text").extract_first())),
-            }
+    def parse_menu(self, response):
+
+        categs = response.xpath('//nav[@id = "emg-mega-menu"]/ul/li/div/div/div[@class = "emg-megamenu-column"]/a[@class = "emg-megamenu-link"][not(a/@class="emg-megamen-link.is-heading")]')
+
+        # href for first (Laptopuri) element:
+        for categ in categs:
+            categ.xpath('@href')
+
+        # get categories
+        navbar = response.css("div.emg-top-menu.emg-fluid-top-menu nav")
+        categs = navbar.css("ul li")
+
 
         # Get the correct next page indicator
         for _e in response.css("div.emg-pagination-box a.emg-icon-holder"):
@@ -35,4 +39,4 @@ class EMAGSpider(Spider):
         if next_page is not None:
             next_page = response.urljoin(next_page)
             print(next_page)
-            yield Request(next_page, callback=self.parse)  # , dont_filter=False)
+            yield Request(next_page, callback=self.parse_menu)  # , dont_filter=False)
