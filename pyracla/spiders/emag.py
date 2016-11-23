@@ -1,4 +1,4 @@
-from scrapy.spider import Spider
+from scrapy.spiders import Spider
 from scrapy.http import Request
 
 
@@ -9,8 +9,9 @@ class EMAGSpider(Spider):
     url = ["http://www.emag.ro/placi_video/c"]
 
     def start_requests(self):
-        yield Request(self.url, callback=self.parse, headers={
-            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B179 Safari/7534.48.3"})
+        yield Request(self.url,
+                      callback=self.parse,
+                      headers={"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B179 Safari/7534.48.3"})
 
     def parse(self, response):
         for item in response.css("div.product-holder-grid form.inner-form"):
