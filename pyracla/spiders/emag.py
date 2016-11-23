@@ -6,7 +6,7 @@ class EMAGSpider(Spider):
     name = "emag"
 
     allowed_domains = ["emag.ro"]
-    url = ["http://www.emag.ro/placi_video/c"]
+    url = "http://www.emag.ro/placi_video/c"
 
     def start_requests(self):
         yield Request(self.url, callback=self.parse)
